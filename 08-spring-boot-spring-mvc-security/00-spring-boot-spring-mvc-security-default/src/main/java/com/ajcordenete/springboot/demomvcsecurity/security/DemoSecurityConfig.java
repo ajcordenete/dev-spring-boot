@@ -32,14 +32,20 @@ public class DemoSecurityConfig {
         return httpSecurity
                 .csrf( csrf -> csrf.disable())
                 .authorizeHttpRequests( configurer -> configurer
-                        .requestMatchers(HttpMethod.GET, "/api/employees").hasRole("EMPLOYEE")
-                        .anyRequest().authenticated())
+                        .requestMatchers(HttpMethod.GET, "/").hasRole("EMPLOYEE")
+                        .requestMatchers(HttpMethod.GET, "/leaders/**").hasRole("MANAGER")
+                        .requestMatchers(HttpMethod.GET, "/systems/**").hasRole("ADMIN")
+                        .anyRequest().authenticated()
+                )
                 .formLogin( form -> form
                         .loginPage("/showMyLoginPage")
                         .loginProcessingUrl("/authenticateTheUser")
                         .permitAll()
                 )
                 .logout(logout -> logout.permitAll())
+                .exceptionHandling( configurer -> configurer
+                        .accessDeniedPage("/access-denied")
+                )
                 .build();
     }
 }

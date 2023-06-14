@@ -15,11 +15,25 @@
         </p>
 
     <hr>
+    <p>
+        User: <span sec:authentication="principal.username"></span>
+        <br><br>
+        Role(s): <span sec:authentication="principal.authorities"></span>
+    </p>
+
+    <div sec:authorize="hasRole('MANAGER')">
         <p>
-            User: <span sec:authentication="principal.username"></span>
-            <br><br>
-            Role(s): <span sec:authentication="principal.authorities"></span>
+            <a th:href="@{/leaders}">Leadership Conferencing</a>
+            (Only for Manager peeps)
         </p>
+    </div>
+
+    <div sec:authorize="hasRole('ADMIN')">
+        <p>
+            <a th:href="@{/systems}">Manage the system</a>
+            (Only for Admin peeps)
+        </p>
+    </div>
 
 
     <form action="#" th:action="@{/logout}" method="post">
